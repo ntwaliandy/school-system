@@ -37,7 +37,7 @@ class StudentExtra(models.Model):
     def get_id(self):
         return self.user.id
     def __str__(self):
-        return self.user.first_name
+        return self.user.first_name + ' ' + self.user.last_name + '  ==>>  ' + self.cl + ' ' + 'level'
 
 
 
@@ -46,6 +46,8 @@ class Attendance(models.Model):
     date=models.DateField()
     cl=models.CharField(max_length=10)
     present_status = models.CharField(max_length=10)
+    def __str__(self):
+        return str(self.date) + ' ' + self.present_status
 
 
 
@@ -53,3 +55,7 @@ class Notice(models.Model):
     date=models.DateField(auto_now=True)
     by=models.CharField(max_length=20,null=True,default='school')
     message=models.CharField(max_length=500)
+    file=models.FileField()
+    def __str__(self):
+        return self.message + ' by ' + self.by
+

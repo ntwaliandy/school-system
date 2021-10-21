@@ -150,7 +150,7 @@ def admin_dashboard_view(request):
     studentfee=models.StudentExtra.objects.filter(status=True).aggregate(Sum('fee',default=0))
     pendingstudentfee=models.StudentExtra.objects.filter(status=False).aggregate(Sum('fee'))
 
-    notice=models.Notice.objects.all()
+    notice=reversed(models.Notice.objects.all())
 
     #aggregate function return dictionary so fetch data from dictionay(by sumit)
     mydict={
@@ -506,7 +506,7 @@ def admin_notice_view(request):
 @user_passes_test(is_teacher)
 def teacher_dashboard_view(request):
     teacherdata=models.TeacherExtra.objects.all().filter(status=True,user_id=request.user.id)
-    notice=models.Notice.objects.all()
+    notice=reversed(models.Notice.objects.all())
     mydict={
         'salary':teacherdata[0].salary,
         'mobile':teacherdata[0].mobile,
@@ -591,7 +591,7 @@ def teacher_notice_view(request):
 @user_passes_test(is_student)
 def student_dashboard_view(request):
     studentdata=models.StudentExtra.objects.all().filter(status=True,user_id=request.user.id)
-    notice=models.Notice.objects.all()
+    notice=reversed(models.Notice.objects.all())
     mydict={
         'roll':studentdata[0].roll,
         'mobile':studentdata[0].mobile,

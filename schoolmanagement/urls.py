@@ -7,6 +7,8 @@ from django.contrib import admin
 from django.urls import path
 from school import views
 from django.contrib.auth.views import LoginView,LogoutView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -59,7 +61,7 @@ urlpatterns = [
     path('admin-view-attendance/<str:cl>', views.admin_view_attendance_view,name='admin-view-attendance'),
 
 
-    path('admin-fee', views.admin_fee_view,name='admin-fee'),
+    path('admin-fee', views.admin_fee_view  ,name='admin-fee'),
     path('admin-view-fee/<str:cl>', views.admin_view_fee_view,name='admin-view-fee'),
 
     path('admin-notice', views.admin_notice_view,name='admin-notice'),
@@ -81,3 +83,7 @@ urlpatterns = [
     path('aboutus', views.aboutus_view),
     path('contactus', views.contactus_view),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
