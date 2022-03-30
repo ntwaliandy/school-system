@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 from django.conf import settings
 from django.core.mail import send_mail
 import datetime
+from school.models import Help
 
 def home_view(request):
     if request.user.is_authenticated:
@@ -499,7 +500,7 @@ def admin_notice_view(request):
 @login_required(login_url='adminlogin')
 @user_passes_test(is_admin)
 def admin_student_complaint_view(request):
-    help=reversed(models.Help.objects.all())
+    help=reversed(Help.objects.all())
     mydict={
         'help': help
     }
