@@ -59,3 +59,38 @@ class Notice(models.Model):
     def __str__(self):
         return self.message + ' by ' + self.by
 
+
+class Notes(models.Model):
+    date=models.DateField(auto_now=True)
+    by=models.CharField(max_length=30,null=True, default='Your Name')
+    year=models.CharField(max_length=10, choices=classes, default='one')
+    roll=models.CharField(max_length=10)
+    message=models.CharField(max_length=500)
+    file=models.FileField()
+    def __str__(self):
+        return self.message + ' by ' + self.by
+
+class Grading(models.Model):
+    date=models.DateField(auto_now=True)
+    by=models.CharField(max_length=30, null=True, default='Your Name')
+    student_first_name=models.CharField(max_length=30, null=True)
+    student_last_name=models.CharField(max_length=30, null=True)
+    roll=models.CharField(max_length=50)
+    course_unit=models.CharField(max_length=100)
+    assignments=models.DecimalField(max_digits=3, decimal_places=1)
+    Tests=models.DecimalField(max_digits=6, decimal_places=1)
+    exam=models.DecimalField(max_digits=6, decimal_places=1)
+
+    total=models.DecimalField(max_digits=6, decimal_places=1, default='0.0')
+    def save(self):
+        self.total = self.assignments + self.Tests + self.exam
+        return super(Grading, self).save()
+    def __str__(self):
+        return self.student_first_name + ' ==>> ' + self.course_unit
+
+class Help(models.Model):
+    date=models.DateField(auto_now=True)
+    message=models.TextField(blank=True, max_length=1000)
+    student=models.CharField(max_length=30, null=True, default='student name')
+    def __str__(self):
+        return self.student + ' ' + 'complaint/s'

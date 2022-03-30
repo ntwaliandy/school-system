@@ -1,6 +1,5 @@
 """
-by sumit kumar
-written by fb.com/sumit.luv
+by Ntwali ANdrew
 
 """
 from django.contrib import admin
@@ -65,6 +64,7 @@ urlpatterns = [
     path('admin-view-fee/<str:cl>', views.admin_view_fee_view,name='admin-view-fee'),
 
     path('admin-notice', views.admin_notice_view,name='admin-notice'),
+    path('admin-student-complaint-view', views.admin_student_complaint_view, name="admin_student_complaint_view"),
 
 
 
@@ -72,10 +72,14 @@ urlpatterns = [
     path('teacher-attendance', views.teacher_attendance_view,name='teacher-attendance'),
     path('teacher-take-attendance/<str:cl>', views.teacher_take_attendance_view,name='teacher-take-attendance'),
     path('teacher-view-attendance/<str:cl>', views.teacher_view_attendance_view,name='teacher-view-attendance'),
-    path('teacher-notice', views.teacher_notice_view,name='teacher-notice'),
 
     path('student-dashboard', views.student_dashboard_view,name='student-dashboard'),
     path('student-attendance', views.student_attendance_view,name='student-attendance'),
+    path('student-notes', views.student_notes, name="student_notes"),
+    path('student-grades-view', views.student_gradeviews, name="student_gradeviews"),
+    path('student-grades', views.grades, name='grades'),
+    path('student-complaint', views.student_complaint, name="student_complaint"),
+    
 
 
 

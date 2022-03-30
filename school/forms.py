@@ -46,10 +46,16 @@ class AskDateForm(forms.Form):
 
 
 
-#for notice related form
-class NoticeForm(forms.ModelForm):
+#for grades related form
+class GradesForm(forms.ModelForm):
     class Meta:
-        model=models.Notice
+        model=models.Grading
+        fields='__all__'
+
+#for help related form
+class HelpForm(forms.ModelForm):
+    class Meta:
+        model=models.Help
         fields='__all__'
 
 
@@ -59,3 +65,4 @@ class ContactusForm(forms.Form):
     Name = forms.CharField(max_length=30)
     Email = forms.EmailField()
     Message = forms.CharField(max_length=500,widget=forms.Textarea(attrs={'rows': 3, 'cols': 30}))
+

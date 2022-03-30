@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.conf import settings
 from django.core.mail import send_mail
+import datetime
 
 def home_view(request):
     if request.user.is_authenticated:
@@ -495,6 +496,14 @@ def admin_notice_view(request):
     return render(request,'school/admin_notice.html',{'form':form})
 
 
+@login_required(login_url='adminlogin')
+@user_passes_test(is_admin)
+def admin_student_complaint_view(request):
+    help=reversed(models.Help.objects.all())
+    mydict={
+        'help': help
+    }
+    return render(request,'school/adminstudenthelp.html',context=mydict)
 
 
 
@@ -581,6 +590,24 @@ def teacher_notice_view(request):
     return render(request,'school/teacher_notice.html',{'form':form})
 
 
+@login_required(login_url='teacherlogin')
+@user_passes_test(is_teacher)
+def grades(request):
+    form=forms.GradesForm()
+    if request.method=='POST':
+        form=forms.GradesForm(request.POST)
+        if form.is_valid():
+            form=form.save(commit=False)
+            form.by=request.user.first_name
+            
+            form.save()
+            return redirect('teacher-dashboard')
+        else:
+            print('form invalid')
+    return render(request,'school/teacher_notice.html',{'form':form})
+
+
+
 
 
 
@@ -619,10 +646,28 @@ def student_attendance_view(request):
     return render(request,'school/student_view_attendance_ask_date.html',{'form':form})
 
 
+@login_required(login_url='studentlogin')
+@user_passes_test(is_student)
+def student_notes(request):
+    students=models.StudentExtra.objects.all().filter(user_id=request.user.id)
+    notes=reversed(models.Notes.objects.all())
+    mydict={
+        'students': students,
+        'notes': notes
+    }
+    return render(request,'school/student_notes.html',context=mydict)
 
 
-
-
+@login_required(login_url='studentlogin')
+@user_passes_test(is_student)
+def student_gradeviews(request):
+    grades=reversed(models.Grading.objects.all())
+    students=models.StudentExtra.objects.all().filter(user_id=request.user.id)
+    mydict={
+        'students': students,
+        'grades': grades
+    }
+    return render(request,'school/student_grades_view.html',context=mydict)
 
 
 
@@ -641,3 +686,19 @@ def contactus_view(request):
             send_mail(str(name)+' || '+str(email),message,settings.EMAIL_HOST_USER, settings.EMAIL_RECEIVING_USER, fail_silently = False)
             return render(request, 'school/contactussuccess.html')
     return render(request, 'school/contactus.html', {'form':sub})
+
+@login_required(login_url='studentlogin')
+@user_passes_test(is_student)
+def student_complaint(request):
+    form=forms.HelpForm()
+    if request.method=='POST':
+        form=forms.HelpForm(request.POST)
+        if form.is_valid():
+            form=form.save(commit=False)
+            form.student=request.user.first_name
+            
+            form.save()
+            return redirect('student-dashboard')
+        else:
+            print('form invalid')
+    return render(request,'school/helpstudentview.html',{'form':form})

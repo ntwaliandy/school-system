@@ -1,0 +1,87 @@
+{% extends 'school/studentbase.html' %}
+
+
+
+{% block content %}
+
+<head>
+
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+  <style media="screen">
+    a:link {
+      text-decoration: none;
+    }
+
+    h6 {
+      text-align: center;
+    }
+
+    .row {
+      margin: 100px;
+    }
+  </style>
+
+</head>
+
+
+<!--
+written By : sumit kumar
+facebook : fb.com/sumit.luv
+-->
+
+
+<div class="container">
+
+  <div class="row">
+
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h6 class="panel-title">Available results for {{ user }}</h6>
+
+      </div>
+
+      <table class="table table-hover" id="dev-table">
+        <thead>
+
+          <tr>
+            <th>Date</th>
+            <th>course</th>
+            <th>Roll</th>
+            <th>Lecturer</th>
+            <th>assignments</th>
+            <th>Tests</th>
+            <th>Exam</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        {% for student in students %}
+        {% for grade in grades %}
+        {% if grade.student_first_name == student.user.first_name and grade.student_last_name == student.user.last_name and grade.roll == student.roll %}
+        <tr>
+          <td>{{grade.date}}</td>
+          <td>{{grade.course_unit}}</td>
+          <td>{{grade.roll}}</td>
+          <td>{{grade.by}}</td>
+          <td>{{grade.assignments}}</td>
+          <td>{{grade.Tests}}</td>
+          <td>{{grade.exam}}</td>
+          <td>{{grade.total}}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+      </table>
+    </div>
+
+
+  </div>
+</div>
+
+
+
+
+
+{% endblock content %}

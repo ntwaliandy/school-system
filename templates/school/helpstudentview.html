@@ -1,4 +1,4 @@
-{% extends 'school/teacherbase.html' %}
+{% extends 'school/studentbase.html' %}
 {% load widget_tweaks %}
 {% block content %}
 
@@ -51,37 +51,17 @@
   <div class="container register-form">
     <div class="form">
       <div class="note">
-        <p>Enter Marks For A specific Student.</p>
+        <p>You still have a chance to text your problems to the respective board.</p>
       </div>
       <div class="form-content">
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
-              {% render_field form.by type="hidden"  class="form-control" placeholder="Your Name" %}
+              {% render_field form.student type="hidden"  class="form-control" placeholder="Your Name" %}
             </div>
+            
             <div class="form-group">
-              {% render_field form.total type="hidden"  class="form-control" placeholder="0.0" %}
-            </div>
-            <div class="form-group">
-              {% render_field form.student_first_name type="text" class="form-control" placeholder="student_first_name" %}
-            </div>
-            <div class="form-group">
-              {% render_field form.student_last_name type="text" class="form-control" placeholder="student_last_name" %}
-            </div>
-            <div class="form-group">
-              {% render_field form.roll type="text" class="form-control" placeholder="student roll" %}
-            </div>
-            <div class="form-group">
-              {% render_field form.course_unit type="text" class="form-control" placeholder="specific course unit" %}
-            </div>
-            <div class="form-group">
-              {% render_field form.assignments type="text" class="form-control" placeholder="marks for assignments" %}
-            </div>
-            <div class="form-group">
-              {% render_field form.Tests type="text" class="form-control" placeholder="marks for Tests" %}
-            </div>
-            <div class="form-group">
-              {% render_field form.exam type="text" class="form-control" placeholder="marks for Exam" %}
+              {% render_field form.message type="text" class="form-control" placeholder="how can we help you!" %}
             </div>
           </div>
         </div>
