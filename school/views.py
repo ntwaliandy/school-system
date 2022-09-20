@@ -132,6 +132,9 @@ def afterlogin_view(request):
         else:
             return render(request,'school/student_wait_for_approval.html')
 
+    else:
+        return render(request, 'school/index.html')
+
 
 
 
