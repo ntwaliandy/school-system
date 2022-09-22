@@ -1,0 +1,131 @@
+{% extends 'school/studentbase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<head>
+  <style media="screen">
+    a:link {
+      text-decoration: none;
+    }
+
+    .note {
+      text-align: center;
+      height: 100px;
+      background: -webkit-linear-gradient(left, #0072ff, #8811c5);
+      color: #fff;
+      font-weight: bold;
+      line-height: 100px;
+    }
+
+    .form-content {
+      padding: 5%;
+      border: 2px solid #ced4da;
+      margin-bottom: 2%;
+    }
+
+    .form-control {
+      border-radius: 1.5rem;
+      height: 200px;
+    }
+
+    .btnSubmit {
+      border: none;
+      border-radius: 1.5rem;
+      padding: 1%;
+      width: 20%;
+      cursor: pointer;
+      background: #0062cc;
+      color: #fff;
+    }
+  </style>
+
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+</head>
+
+<!------ notice page for  by admin(sumit)  ---------->
+<form method="post">
+  {% csrf_token %}
+  <div class="container register-form">
+    <div class="form">
+      <div class="note">
+        <p>{{test_name}} Test</p>
+        
+      </div>
+      <p>{{starting_time}}  <----> {{ending_time}}</p>
+      <div class="form-content">
+        <div class="row">
+          <div class="col-md-12">
+            <ol>
+              {% if stud_answers %}
+              {% for qr, tst in mylist %}
+              <form action="" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                  
+                  <li>
+                    <h6><b>Question:</b>  {{qr.question}}</h6>
+                    <h6><b>A:</b>  {{qr.a}}</h6>
+                    <h6><b>B:</b> {{ qr.b }}</h6>
+                    <h6><b>C:</b> {{ qr.c}}</h6>
+                    <h6><b>D:</b> {{ qr.d }}</h6>
+                  </li>
+                  
+                  <input type="hidden" name="correct_answer" value="{{qr.answer}}" />
+                  <input type="hidden" name="question_id" value="{{qr.id}}" />
+                 
+                  
+
+                    {% if tst.question|add:0 == qr.id %}
+                    <h6><b>Answered </b></h6>
+                    {% else %}
+                    <h6><b>Answer: </b><input type="text" required name="answer" placeholder="CAPITAL LETTER" /></h6>
+                    <button type="submit" class="btnSubmit">SUBMIT</button>
+
+                    {% endif %}
+                  
+                  
+                  
+                  
+                
+                </div>
+              </form>
+              <br>
+              {% endfor %}
+              {% else %}
+              {% for qr in questions %}
+              <form action="" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                  
+                  <li>
+                    <h6><b>Question:</b>  {{qr.question}}</h6>
+                    <h6><b>A:</b>  {{qr.a}}</h6>
+                    <h6><b>B:</b> {{ qr.b }}</h6>
+                    <h6><b>C:</b> {{ qr.c}}</h6>
+                    <h6><b>D:</b> {{ qr.d }}</h6>
+                  </li>
+                  
+                  <input type="hidden" name="correct_answer" value="{{qr.answer}}" />
+                  <input type="hidden" name="question_id" value="{{qr.id}}" />
+                 
+                    <h6><b>Answer: </b><input type="text" required name="answer" placeholder="CAPITAL LETTER" /></h6>
+                    <button type="submit" class="btnSubmit">SUBMIT</button>
+
+                </div>
+              </form>
+              <br>
+              {% endfor %}
+              {% endif %}
+            </ol>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</form>
+{% endblock content %}

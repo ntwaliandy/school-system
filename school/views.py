@@ -1,4 +1,8 @@
-from django.shortcuts import render,redirect,reverse
+from cgi import test
+from http.client import OK
+from multiprocessing import context
+from unicodedata import name
+from django.shortcuts import render,redirect,reverse, get_object_or_404
 from . import forms,models
 from django.db.models import Sum
 from django.contrib.auth.models import Group
@@ -8,6 +12,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 import datetime
 from school.models import Help
+from itertools import cycle
 
 def home_view(request):
     if request.user.is_authenticated:
@@ -616,7 +621,6 @@ def grades(request):
 
 
 
-
 #FOR STUDENT AFTER THEIR Loginnnnnnnnnnnnnnnnnnnnn(by sumit)
 @login_required(login_url='studentlogin')
 @user_passes_test(is_student)
@@ -672,6 +676,86 @@ def student_gradeviews(request):
         'grades': grades
     }
     return render(request,'school/student_grades_view.html',context=mydict)
+
+@login_required(login_url='studentlogin')
+@user_passes_test(is_student)
+def available_tests(request):
+    student=get_object_or_404(models.StudentExtra, user_id=request.user.id)
+    now = datetime.datetime.now()
+    tests= models.Test.objects.filter(ending_time__gte=now)
+    context = {
+        "student": student,
+        "tests": tests,
+    }
+
+    return render(request, "school/student_available_tests.html", context)
+
+
+@login_required(login_url='student-login')
+@user_passes_test(is_student)
+def student_test(request,pk):
+    if request.method == 'POST':
+        test_id = pk
+        questions = models.Question.objects.filter(test=test_id)
+        test = get_object_or_404(models.Test, id=test_id)
+        stud_answers = models.Answer.objects.filter(student_username=request.user.username)
+        context = {
+            "test_name": test.name,
+            "starting_time": test.starting_time,
+            "ending_time": test.ending_time,
+            "questions": questions,
+            "stud_answers": stud_answers,
+        }
+
+        data = request.POST
+        student_answer = data['answer']
+        correct_answer = data.get('correct_answer', 'null')
+        question_id = data['question_id']
+        print(student_answer)
+        print(correct_answer)
+        
+        if student_answer == correct_answer:
+            student = request.user.username
+            test_name = test.name
+            mark = 2
+
+            models.Answer.objects.create(
+                student_username=student,
+                test=test_name,
+                question=question_id,
+                mark=mark
+            )
+            return redirect('student-test', pk=test.id)
+        else:
+            student = request.user.username
+            test_name = test.name
+            mark = 0
+
+            models.Answer.objects.create(
+                student_username=student,
+                test=test_name,
+                question=question_id,
+                mark=mark
+            )
+            return redirect('student-test', pk=test.id)
+    else:
+
+        test_id = pk
+        print(pk)
+        questions = models.Question.objects.filter(test=test_id)
+        test = get_object_or_404(models.Test, id=test_id)
+        stud_answers = models.Answer.objects.filter(student_username=request.user.username)
+        mylist = zip(questions, cycle(stud_answers))
+        print(mylist)
+        context = {
+            "test_name": test.name,
+            "starting_time": test.starting_time,
+            "ending_time": test.ending_time,
+            "questions": questions,
+            "stud_answers": stud_answers,
+            "mylist": mylist,
+        }
+        return render(request, 'school/student_test.html', context)
 
 
 

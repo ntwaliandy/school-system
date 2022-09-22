@@ -9,6 +9,7 @@ from django.contrib.auth.views import LoginView,LogoutView
 from django.conf import settings
 from django.conf.urls.static import static
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.home_view,name=''),
@@ -72,15 +73,14 @@ urlpatterns = [
     path('teacher-attendance', views.teacher_attendance_view,name='teacher-attendance'),
     path('teacher-take-attendance/<str:cl>', views.teacher_take_attendance_view,name='teacher-take-attendance'),
     path('teacher-view-attendance/<str:cl>', views.teacher_view_attendance_view,name='teacher-view-attendance'),
-
+    path('available-tests', views.available_tests, name='available-tests'),
     path('student-dashboard', views.student_dashboard_view,name='student-dashboard'),
     path('student-attendance', views.student_attendance_view,name='student-attendance'),
     path('student-notes', views.student_notes, name="student_notes"),
     path('student-grades-view', views.student_gradeviews, name="student_gradeviews"),
     path('student-grades', views.grades, name='grades'),
     path('student-complaint', views.student_complaint, name="student_complaint"),
-    
-
+    path('student-test/<int:pk>/', views.student_test,name='student-test'),
 
 
 

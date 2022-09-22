@@ -94,3 +94,37 @@ class Help(models.Model):
     student=models.CharField(max_length=30, null=True, default='student name')
     def __str__(self):
         return self.student + ' ' + 'complaint/s'
+
+
+class Test(models.Model):
+    name = models.CharField(max_length=250, default='null')
+    year = models.CharField(max_length=10, default='null')
+    course = models.CharField(max_length=100, default='null')
+    starting_time = models.DateTimeField()
+    ending_time = models.DateTimeField()
+
+    def __str__(self):
+        return self.name
+
+class Question(models.Model):
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    question = models.TextField(max_length=500)
+    a = models.TextField(max_length=500, default='null')
+    b = models.TextField(max_length=500, default='null')
+    c = models.TextField(max_length=500, default='null')
+    d = models.TextField(max_length=500, default='null')
+    answer = models.CharField(max_length=5)
+
+
+    def __str__(self):
+        return "Question: " + self.question
+
+
+class Answer(models.Model):
+    student_username = models.CharField(max_length=150, default='null')
+    test = models.CharField(max_length=250, default='null')
+    question = models.CharField(max_length=10, default='null')
+    mark = models.CharField(max_length=10, default='null')
+
+    def __str__(self):
+        return self.student_username + " => " + self.question
